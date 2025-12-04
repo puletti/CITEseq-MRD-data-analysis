@@ -1,0 +1,6 @@
+DATA/
+RESULTS/
+notebooks/
+.Rhistory
+.Rdata
+.Rproj.user/
