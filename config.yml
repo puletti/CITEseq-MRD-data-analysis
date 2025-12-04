@@ -1,0 +1,34 @@
+paths:
+  resources: "RESOURCES/"
+  scripts_dir: "scripts/"
+  input_dir: "DATA/"
+  output_dir: "RESULTS/"
+  
+  
+
+files:
+  input: "AMLMRD_curated_seuratObject.Rds"
+  
+steps:
+  - "QC_RNA"
+  - "QC_ADT"
+  - "normalization"
+  
+analysis:
+  qc:
+   min_nFeature_per_cell: 750
+   max_nFeature_per_cell: 6000
+   max_mito: 15
+   max_ribo: 30
+   
+  clustering:
+   resolution: 0.8
+   pcs: 30
+  
+  metadata:
+    batchvar: "RunID.x"
+    batchvar2: "RunID.y"
+    donors: "DonorID"       #3
+    timepoint: "Group"      #3
+    samples: "Description"  #9
+  
