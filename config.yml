@@ -12,6 +12,7 @@ files:
 steps:
   - "QC_RNA"
   - "QC_ADT"
+  - "gene_cell_filtering"
   - "normalization"
   
 analysis:
@@ -20,6 +21,7 @@ analysis:
    max_nFeature_per_cell: 6000
    max_mito: 15
    max_ribo: 30
+   max_ncount: 30000
    
   clustering:
    resolution: 0.8

@@ -31,6 +31,9 @@ steps <- config$steps
 assign(x = paste0(steps[1], "_outdir"), value = paste0(output_dir, "01-", steps[1], "/"))
 #2.   qc on ADT
 assign(x = paste0(steps[2], "_outdir"), value = paste0(output_dir, "02-", steps[2], "/"))
+#3.   cell and gene filtering based on QC and gene expression
+assign(x = paste0(steps[3], "_outdir"), value = paste0(output_dir, "03-", steps[3], "/"))
+
 
 # VARIABLES
 ## QC
@@ -38,6 +41,7 @@ min_nFeature_per_cell <- as.numeric(config$analysis$qc$min_nFeature)  #750
 max_nFeature_per_cell <- as.numeric(config$analysis$qc$max_nFeature) #6000
 max_mito <- as.numeric(config$analysis$qc$max_mito) #15
 max_ribo <- as.numeric(config$analysis$qc$max_ribo) #30
+max_nCount <- as.numeric(config$analysis$qc$max_nCount) #30000
 
 # FILES
 seu <- config$files$input
@@ -67,3 +71,4 @@ palette_DonorID <- c(
 
 source(paste0(scripts_dir, "QC_RNA.R"))
 source(paste0(scripts_dir, "QC_ADT.R"))
+source(paste0(scripts_dir, "Gene_Cell_filtering.R"))
