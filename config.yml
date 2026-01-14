@@ -13,7 +13,7 @@ steps:
   - "QC_RNA"
   - "QC_ADT"
   - "gene_cell_filtering"
-  - "normalization"
+  - "RNA_norm"
   
 analysis:
   qc:

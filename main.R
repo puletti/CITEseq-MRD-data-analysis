@@ -33,6 +33,8 @@ assign(x = paste0(steps[1], "_outdir"), value = paste0(output_dir, "01-", steps[
 assign(x = paste0(steps[2], "_outdir"), value = paste0(output_dir, "02-", steps[2], "/"))
 #3.   cell and gene filtering based on QC and gene expression
 assign(x = paste0(steps[3], "_outdir"), value = paste0(output_dir, "03-", steps[3], "/"))
+#4.   RNA normalization
+assign(x = paste0(steps[4], "_outdir"), value = paste0(output_dir, "04-", steps[4], "/"))
 
 
 # VARIABLES
@@ -68,7 +70,14 @@ palette_DonorID <- c(
   # Group 4 (purple)
   "#af8dc3"
 )
-
+print("executing RNA QC step...")
 source(paste0(scripts_dir, "QC_RNA.R"))
+print("RNA QC step complete!")
+print("executing ADT QC step...")
 source(paste0(scripts_dir, "QC_ADT.R"))
+print("ADT QC step complete!")
+print("executing Gene and Cell filtering step...")
 source(paste0(scripts_dir, "Gene_Cell_filtering.R"))
+print("Gene and Cell filtering step complete!")
+print("executing RNA normalization step...")
+source(paste0(scripts_dir, "RNA_norm.R"))
