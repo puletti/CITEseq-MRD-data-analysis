@@ -1,4 +1,4 @@
-library(scater)
+library(scater, quietly = T, verbose = F, warn.conflicts = F)
 
 if (!dir.exists(gene_cell_filtering_outdir)) {
   dir.create(gene_cell_filtering_outdir, recursive = TRUE)
@@ -8,12 +8,14 @@ DefaultAssay(seu) <- 'RNA'
 ### SUBSETTING
 ####### option 2: hardcode: same threshold for all the samples
 print(dim(seu))
+print(max_nCount)
 seu = subset(seu,
              subset = nFeature_RNA > min_nFeature_per_cell &
                       nFeature_RNA < max_nFeature_per_cell &
                       percent_MT < max_mito &
                       percent.ribo < max_ribo &
-                      nCount_RNA < max_nCount)
+                      nCount_RNA < max_nCount
+             )
 
 dim(seu)
 
@@ -22,14 +24,15 @@ qc3= FeatureScatter(seu, feature1 = "nCount_RNA", feature2 = "nFeature_RNA", gro
 qc4= FeatureScatter(seu, feature1 = "nCount_RNA", feature2 = "percent_MT", group.by = "Description", jitter = TRUE,cols = palette_description, shuffle = TRUE) + NoLegend()
 qc5= FeatureScatter(seu, feature1 = "percent_MT", feature2 = "nFeature_RNA", group.by = "Description", jitter = TRUE,cols = palette_description, shuffle = TRUE)
 
-qc6 <- VlnPlot(seu, features = c("nFeature_RNA", "nCount_RNA", "percent_MT"),pt.size = 0.2, alpha = 0.02, group.by = "Description", ncol = 3, cols = palette_description)
+qc6 <- VlnPlot(seu, features = c("nFeature_RNA", "nCount_RNA", "percent_MT"),pt.size = 0, group.by = "Description", ncol = 3, cols = palette_description)
 
 qc_combined <- qc3 |qc4 | qc5
 
 ggsave(
   filename = paste0(gene_cell_filtering_outdir, "qc_filtered_overview.png"),
-  plot = qc_combined,   
-  height = 8,  
+  plot = qc_combined,
+  height=7,
+  width=17,  
   dpi = 300
 )
 
@@ -41,7 +44,7 @@ ggsave(
 )
 
 # some cells are labeled as NA. remove them.
-seu = subset(seu, subset = !is.na(Description))
+#seu = subset(seu, subset = !is.na(Description))
 dim(seu)
 
 ## GENE FILTERING

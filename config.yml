@@ -1,3 +1,7 @@
+options:
+  libPath: "/appdata/users/P100068/R/libs"
+  home_dir: "/home/P100068/lindas"
+
 paths:
   resources: "RESOURCES/"
   scripts_dir: "scripts/"
@@ -17,15 +21,16 @@ steps:
   
 analysis:
   qc:
-   min_nFeature_per_cell: 750
-   max_nFeature_per_cell: 6000
-   max_mito: 15
-   max_ribo: 30
-   max_ncount: 30000
-   
+    min_nFeature_per_cell: 750
+    max_nFeature_per_cell: 6000
+    max_mito: 15
+    max_ribo: 30
+    max_ncount: 30000
+    min_ncount: 0
+
   clustering:
-   resolution: 0.8
-   pcs: 30
+    resolution: 0.8
+    pcs: 30
   
   metadata:
     batchvar: "RunID.x"

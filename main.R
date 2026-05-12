@@ -14,10 +14,12 @@ library(yaml)
 #library(ComplexHeatmap)
 
 #library(dittoSeq)
-setwd("/home/P100068/lindas")
+
 
 
 config <- yaml::read_yaml("./config.yml")
+setwd(config$options$home_dir)
+.libPaths(config$options$libPath)
 
 # DIRECTORIES
 resources_dir <- config$paths$resources
@@ -43,7 +45,7 @@ min_nFeature_per_cell <- as.numeric(config$analysis$qc$min_nFeature)  #750
 max_nFeature_per_cell <- as.numeric(config$analysis$qc$max_nFeature) #6000
 max_mito <- as.numeric(config$analysis$qc$max_mito) #15
 max_ribo <- as.numeric(config$analysis$qc$max_ribo) #30
-max_nCount <- as.numeric(config$analysis$qc$max_nCount) #30000
+max_nCount <- as.numeric(config$analysis$qc$max_ncount) #30000
 
 # FILES
 seu <- config$files$input

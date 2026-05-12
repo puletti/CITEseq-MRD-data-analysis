@@ -1,11 +1,4 @@
-library(Seurat)
-library("tidyverse")
-library(RColorBrewer)
-library(ggplot2)
-library(pheatmap)
-library(plotly)
-library(ggsci)
-library(viridis)
+
 
 if (!dir.exists(QC_ADT_outdir)) {
   dir.create(QC_ADT_outdir, recursive = TRUE)
@@ -45,7 +38,7 @@ qc3 <- ggplot(meta, aes(x = Description, y = total_counts, fill = Description)) 
 
 qc4 <- FeatureScatter(seu, feature1 = "nCount_RNA", feature2 = "nCount_ADT", group.by = "DonorID", shuffle = FALSE, pt.size = 0.02, smooth = TRUE, cols = palette_DonorID) + geom_smooth(method = "lm", se = TRUE) + ylim(1,5000)
 #qc5 <- FeatureScatter(seu, feature1 = "nCount_RNA", feature2 = "nCount_ADT", group.by = "RunID.x", shuffle = FALSE, pt.size = 0.02) + geom_smooth(method = "lm", se = TRUE) + ylim(1,4000)
-qc6 <- VlnPlot(seu, features = "nCount_ADT", group.by = "DonorID", cols = palette_DonorID, pt.size = 0.3, alpha = 0.05)+ ylim(1,10000)
+qc6 <- VlnPlot(seu, features = "nCount_ADT", group.by = "DonorID", cols = palette_DonorID, pt.size = 0.3)+ ylim(1,10000)
 
 adt_df = as.data.frame(t(as.matrix(counts_ADT)))
 adt_df$sample = meta$Description

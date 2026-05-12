@@ -1,11 +1,11 @@
-library(Seurat)
-library("tidyverse")
-library(RColorBrewer)
-library(ggplot2)
-library(pheatmap)
-library(plotly)
-library(ggsci)
-library(viridis)
+library(Seurat, quietly = T, verbose = F, warn.conflicts = F)
+library("tidyverse", quietly = T, verbose = F, warn.conflicts = F)
+library(RColorBrewer, quietly = T, verbose = F, warn.conflicts = F)
+library(ggplot2, quietly = T, verbose = F, warn.conflicts = F)
+library(pheatmap, quietly = T, verbose = F, warn.conflicts = F)
+library(plotly, quietly = T, verbose = F, warn.conflicts = F)
+library(ggsci, quietly = T, verbose = F, warn.conflicts = F)
+library(viridis, quietly = T, verbose = F, warn.conflicts = F)
 
 if (!dir.exists(QC_RNA_outdir)) {
   dir.create(QC_RNA_outdir, recursive = TRUE)
@@ -54,7 +54,6 @@ plot(sort(pct_mito))
 abline(h=max_mito, col='red')
 dev.off()
 
-#VlnPlot(seu, features = c("nFeature_RNA", "nCount_RNA", "percent_MT"), ncol = 3, alpha = 0.02)
 
 
 ### RIBOSOMAL check
@@ -96,24 +95,36 @@ qc_long <- qc_by_sample %>%
     )
   )
 
-qc0= ggplot() +
-  # bars = number of cells (primary axis)
-  geom_col(data = qc_by_sample,
-           aes(x = Description, y = n_cells, fill = Description), alpha = 0.7) +
-  # lines = medians (secondary axis)
-  geom_line(data = qc_long,
-            aes(x = Description, y = value_scaled, color = metric, group = metric),
-            size = 1.2) +
-  geom_point(data = qc_long,
-             aes(x = Description, y = value_scaled, color = metric),
-             size = 2) +
+qc0=ggplot() +
+  geom_col(
+    data = qc_by_sample,
+    aes(x = Description, y = n_cells, fill = Description),
+    alpha = 0.7
+  ) +
+  geom_line(
+    data = qc_long,
+    aes(x = Description, y = value_scaled,
+        color = metric, group = metric),
+    size = 1.2) +
+  geom_point(
+    data = qc_long,
+    aes(x = Description, y = value_scaled, color = metric),
+    size = 2
+  ) +
+  scale_fill_manual(values = palette_description) + # <- bar colors
   scale_y_continuous(
     name = "Number of cells",
-    sec.axis = sec_axis(~./1000,
-                        name = "Median metrics (nCount, nFeature, %MT×1000)")
+    sec.axis = sec_axis(
+      ~./1000,
+      name = "Median metrics (nCount, nFeature, %MT×1000)"
+    )
   ) +
   theme_minimal() +
-  labs(title = "QC Overview per Sample", x = "Sample", color = "Metric") +
+  labs(
+    title = "QC Overview per Sample",
+    x = "Sample",
+    color = "Metric"
+  ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 colors = viridis(12, option = "turbo")
@@ -126,6 +137,15 @@ qc_combined <- qc0 | qc1  |qc2
 ggsave(
   filename = paste0(QC_RNA_outdir, "qc_overview.png"),
   plot = qc_combined,
+  width = 17,   # set a suitable width
+  height = 7,   # depends on your layout
+  dpi = 300
+)
+
+qc3 <- VlnPlot(seu, features = c("nFeature_RNA", "nCount_RNA", "percent_MT"), ncol = 3, group.by = "DonorID", cols = palette_DonorID)
+ggsave(
+  filename = paste0(QC_RNA_outdir, "qc_overview_violin.png"),
+  plot = qc3,
   width = 17,   # set a suitable width
   height = 7,   # depends on your layout
   dpi = 300
