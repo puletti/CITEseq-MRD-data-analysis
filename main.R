@@ -37,6 +37,8 @@ assign(x = paste0(steps[2], "_outdir"), value = paste0(output_dir, "02-", steps[
 assign(x = paste0(steps[3], "_outdir"), value = paste0(output_dir, "03-", steps[3], "/"))
 #4.   RNA normalization
 assign(x = paste0(steps[4], "_outdir"), value = paste0(output_dir, "04-", steps[4], "/"))
+#5.   ADT normamlization
+assign(x = paste0(steps[5], "_outdir"), value = paste0(output_dir, "05-", steps[5], "/"))
 
 
 # VARIABLES
@@ -46,6 +48,13 @@ max_nFeature_per_cell <- as.numeric(config$analysis$qc$max_nFeature) #6000
 max_mito <- as.numeric(config$analysis$qc$max_mito) #15
 max_ribo <- as.numeric(config$analysis$qc$max_ribo) #30
 max_nCount <- as.numeric(config$analysis$qc$max_ncount) #30000
+
+## Norm
+method <- as.character(config$analysis$norm$method)
+n_var_features <- as.numeric(config$analysis$norm$n_var_features) #3000
+vars_to_regress <- as.character(config$analysis$norm$vars_to_regress)
+samples <- as.character(config$analysis$norm$samples)
+n_pcs <- as.numeric(config$analysis$norm$n_pcs)
 
 # FILES
 seu <- config$files$input
@@ -83,3 +92,7 @@ source(paste0(scripts_dir, "Gene_Cell_filtering.R"))
 print("Gene and Cell filtering step complete!")
 print("executing RNA normalization step...")
 source(paste0(scripts_dir, "RNA_norm.R"))
+print("RNA normalization step complete!")
+print("executing ADT normalization step...")
+source(paste0(scripts_dir, "ADT_norm.R"))
+print("ADT normalization step complete!")

@@ -18,6 +18,7 @@ steps:
   - "QC_ADT"
   - "gene_cell_filtering"
   - "RNA_norm"
+  - "ADT_norm"
   
 analysis:
   qc:
@@ -27,6 +28,15 @@ analysis:
     max_ribo: 30
     max_ncount: 30000
     min_ncount: 0
+  norm:
+    method: "classic"       #classic / SCTransform
+    n_var_features: 3000
+    vars_to_regress: "nCount_RNA"
+    samples: "DonorID"
+    n_pcs: 30
+  
+  normalization:
+   
 
   clustering:
     resolution: 0.8
