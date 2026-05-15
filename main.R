@@ -27,6 +27,11 @@ scripts_dir <- config$paths$scripts_dir
 input_dir <- config$paths$input_dir
 output_dir <- config$paths$output_dir
 
+# FILES
+seu <- config$files$input
+seu <- readRDS(paste0(input_dir, seu))
+
+
 #STEPS
 steps <- config$steps
 #1.   qc on RNA 
@@ -39,6 +44,8 @@ assign(x = paste0(steps[3], "_outdir"), value = paste0(output_dir, "03-", steps[
 assign(x = paste0(steps[4], "_outdir"), value = paste0(output_dir, "04-", steps[4], "/"))
 #5.   ADT normamlization
 assign(x = paste0(steps[5], "_outdir"), value = paste0(output_dir, "05-", steps[5], "/"))
+#6.   dimensionality reduction
+assign(x = paste0(steps[6], "_outdir"), value = paste0(output_dir, "06-", steps[6], "/"))
 
 
 # VARIABLES
@@ -50,15 +57,16 @@ max_ribo <- as.numeric(config$analysis$qc$max_ribo) #30
 max_nCount <- as.numeric(config$analysis$qc$max_ncount) #30000
 
 ## Norm
-method <- as.character(config$analysis$norm$method)
+method_norm <- as.character(config$analysis$norm$method)
 n_var_features <- as.numeric(config$analysis$norm$n_var_features) #3000
 vars_to_regress <- as.character(config$analysis$norm$vars_to_regress)
 samples <- as.character(config$analysis$norm$samples)
-n_pcs <- as.numeric(config$analysis$norm$n_pcs)
 
-# FILES
-seu <- config$files$input
-seu <- readRDS(paste0(input_dir, seu))
+## Dim Reduction
+method_neighbors <- as.character(config$analysis$dim_reduction$method_neighbors)
+n_pcs_RNA <- as.numeric(config$analysis$dim_reduction$n_pcs_RNA)
+n_pcs_ADT <- as.numeric(config$analysis$dim_reduction$n_pcs_ADT)
+
 
 #PALETTES
 palette_description <- c(
@@ -81,18 +89,18 @@ palette_DonorID <- c(
   # Group 4 (purple)
   "#af8dc3"
 )
-print("executing RNA QC step...")
+cat("executing RNA QC step..\n")
 source(paste0(scripts_dir, "QC_RNA.R"))
-print("RNA QC step complete!")
-print("executing ADT QC step...")
+cat("RNA QC step complete!\n")
+cat("executing ADT QC step...\n")
 source(paste0(scripts_dir, "QC_ADT.R"))
-print("ADT QC step complete!")
-print("executing Gene and Cell filtering step...")
+cat("ADT QC step complete!\n")
+cat("executing Gene and Cell filtering step...\n")
 source(paste0(scripts_dir, "Gene_Cell_filtering.R"))
-print("Gene and Cell filtering step complete!")
-print("executing RNA normalization step...")
+cat("Gene and Cell filtering step complete!\n")
+cat("executing RNA normalization step...\n")
 source(paste0(scripts_dir, "RNA_norm.R"))
-print("RNA normalization step complete!")
-print("executing ADT normalization step...")
+cat("RNA normalization step complete!\n")
+cat("executing ADT normalization step...\n")
 source(paste0(scripts_dir, "ADT_norm.R"))
-print("ADT normalization step complete!")
+cat("ADT normalization step complete!\n")

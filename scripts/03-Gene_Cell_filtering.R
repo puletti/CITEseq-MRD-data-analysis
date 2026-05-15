@@ -7,8 +7,7 @@ if (!dir.exists(gene_cell_filtering_outdir)) {
 DefaultAssay(seu) <- 'RNA'
 ### SUBSETTING
 ####### option 2: hardcode: same threshold for all the samples
-print(dim(seu))
-print(max_nCount)
+
 seu = subset(seu,
              subset = nFeature_RNA > min_nFeature_per_cell &
                       nFeature_RNA < max_nFeature_per_cell &
