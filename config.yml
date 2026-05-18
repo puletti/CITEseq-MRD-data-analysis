@@ -14,12 +14,12 @@ files:
   input: "AMLMRD_curated_seuratObject.Rds"
   
 steps:
-  - "01-QC_RNA"
-  - "02-QC_ADT"
-  - "03-gene_cell_filtering"
-  - "04-RNA_norm"
-  - "05-ADT_norm"
-  - "06-dim_reduction"
+  - "QC_RNA"
+  - "QC_ADT"
+  - "gene_cell_filtering"
+  - "RNA_norm"
+  - "ADT_norm"
+  - "dim_reduction"
   
 analysis:
   qc:
@@ -29,14 +29,15 @@ analysis:
     max_ribo: 30
     max_ncount: 30000
     min_ncount: 0
+    filtering_method: "classic"     #classic / adaptive
   norm:
-    method_norm: "SCTransform_classic"       #classic / SCTransform_split / SCTransform_classic
+    method_norm: "classic"       #classic / SCTransform_split / SCTransform_classic
     n_var_features: 3000
     vars_to_regress: "nCount_RNA"
     samples: "DonorID"
   
   dim_reduction:
-    method_neighbors: "multimodal"        #pca / apca / multimodal
+    method_neighbors: "pca"        #pca / apca / multimodal
     n_pcs_RNA: 30
     n_pcs_ADT: 10
     harmony: TRUE

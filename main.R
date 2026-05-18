@@ -47,6 +47,9 @@ assign(x = paste0(steps[5], "_outdir"), value = paste0(output_dir, "05-", steps[
 #6.   dimensionality reduction
 assign(x = paste0(steps[6], "_outdir"), value = paste0(output_dir, "06-", steps[6], "/"))
 
+# METADATA
+batchvar <- as.character(config$analysis$metadata$batchvar)
+batchvar2 <- as.character(config$analysis$metadata$batchvar2)
 
 # VARIABLES
 ## QC
@@ -66,7 +69,7 @@ samples <- as.character(config$analysis$norm$samples)
 method_neighbors <- as.character(config$analysis$dim_reduction$method_neighbors)
 n_pcs_RNA <- as.numeric(config$analysis$dim_reduction$n_pcs_RNA)
 n_pcs_ADT <- as.numeric(config$analysis$dim_reduction$n_pcs_ADT)
-
+harmony <- as.logical(config$analysis$dim_reduction$harmony)
 
 #PALETTES
 palette_description <- c(
@@ -90,17 +93,24 @@ palette_DonorID <- c(
   "#af8dc3"
 )
 cat("executing RNA QC step..\n")
-source(paste0(scripts_dir, "QC_RNA.R"))
+source(paste0(scripts_dir, "01-QC_RNA.R"))
 cat("RNA QC step complete!\n")
 cat("executing ADT QC step...\n")
-source(paste0(scripts_dir, "QC_ADT.R"))
+source(paste0(scripts_dir, "02-QC_ADT.R"))
 cat("ADT QC step complete!\n")
 cat("executing Gene and Cell filtering step...\n")
-source(paste0(scripts_dir, "Gene_Cell_filtering.R"))
+source(paste0(scripts_dir, "03-Gene_Cell_filtering.R"))
 cat("Gene and Cell filtering step complete!\n")
 cat("executing RNA normalization step...\n")
-source(paste0(scripts_dir, "RNA_norm.R"))
+source(paste0(scripts_dir, "04-RNA_norm.R"))
 cat("RNA normalization step complete!\n")
 cat("executing ADT normalization step...\n")
-source(paste0(scripts_dir, "ADT_norm.R"))
+source(paste0(scripts_dir, "05-ADT_norm.R"))
 cat("ADT normalization step complete!\n")
+cat("executing dimensionality reduction step...\n")
+source(paste0(scripts_dir, "06-Dim_reduction.R"))
+cat("dimensionality reduction step complete!\n")
+
+
+# logs
+writeLines(capture.output(sessionInfo(), "logs/sessionInfo.txt"))

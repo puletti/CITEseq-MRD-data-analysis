@@ -2,6 +2,9 @@ if (!dir.exists(RNA_norm_outdir)) {
   dir.create(RNA_norm_outdir, recursive = TRUE)
 }
 
+#defaulting
+seu@reductions <- list()
+
 message("proceding with normalization: ", method_norm)
 
 seu$raw_counts_per_cell <- Matrix::colSums(GetAssayData(seu, slot = "counts"))
